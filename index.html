@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أبطال التجويد - المد الفرعي بسبب السكون</title>
+    <style>
+      :root {
+        --primary: #ff6b6b;
+        --secondary: #4ecdc4;
+        --accent: #ffe66d;
+        --dark: #2c3e50;
+        --light: #f7f9fc;
+        --success: #2ecc71;
+        --error: #e74c3c;
+        --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: var(--font-main);
+      }
+
+      body {
+        background-color: #e0f7fa;
+        background-image: radial-gradient(#4ecdc4 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: var(--dark);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+        border: 5px solid var(--secondary);
+      }
+
+      /* Header & Dashboard */
+      header {
+        background: var(--secondary);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 5px solid rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .mute-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s;
+      }
+      .mute-btn:hover {
+        background: white;
+        color: var(--secondary);
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        font-size: 1.5rem;
+        color: var(--dark);
+        margin-bottom: 15px;
+      }
+      h3 {
+        color: var(--primary);
+        margin: 10px 0;
+      }
+
+      .dashboard-stats {
+        display: flex;
+        justify-content: space-around;
+        background: var(--accent);
+        padding: 10px;
+        font-weight: bold;
+        color: var(--dark);
+      }
+
+      .stat-box {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* Navigation Buttons */
+      .nav-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 40px;
+      }
+
+      .big-btn {
+        padding: 30px;
+        border: none;
+        border-radius: 20px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .big-btn:active {
+        transform: translateY(5px);
+        box-shadow: none;
+      }
+
+      .btn-learn {
+        background: var(--primary);
+      }
+      .btn-play {
+        background: #9b59b6;
+      }
+
+      /* Learning Section */
+      .section {
+        display: none;
+        padding: 20px;
+        animation: fadeIn 0.5s;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      /* Mind Map */
+      .mind-map {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .mm-node {
+        background: white;
+        border: 3px solid var(--secondary);
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+        text-align: center;
+        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .mm-root {
+        background: var(--accent);
+        font-size: 1.2rem;
+        border-color: #f1c40f;
+      }
+
+      .mm-branches {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .mm-leaf {
+        background: #e8f8f5;
+        font-size: 0.9rem;
+      }
+      .mm-sub {
+        font-size: 0.8rem;
+        background: #fdf2e9;
+        margin-top: 5px;
+      }
+
+      /* Explanation Cards */
+      .lesson-card {
+        background: #fff;
+        border: 2px solid #eee;
+        border-radius: 15px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .quran-example {
+        font-family: "Traditional Arabic", serif;
+        font-size: 1.8rem;
+        color: var(--dark);
+        background: #fcf8e3;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 10px 0;
+        border: 1px dashed #d4b168;
+      }
+
+      .highlight {
+        color: var(--error);
+        font-weight: bold;
+      }
+
+      /* Game Section */
+      .question-box {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .question-text {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid var(--secondary);
+      }
+
+      .answers-grid {
+        display: grid;
+        gap: 15px;
+      }
+
+      .ans-btn {
+        padding: 15px;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .ans-btn:hover {
+        background: var(--light);
+        border-color: var(--secondary);
+      }
+
+      .tf-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .btn-true {
+        color: var(--success);
+        border-color: var(--success);
+      }
+      .btn-false {
+        color: var(--error);
+        border-color: var(--error);
+      }
+
+      .btn-true:hover {
+        background: #e8f8f5;
+      }
+      .btn-false:hover {
+        background: #fdedec;
+      }
+
+      /* Feedback Modal */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .modal {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        animation: popIn 0.3s;
+        max-width: 90%;
+      }
+
+      .feedback-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .home-btn {
+        background: var(--dark);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.5);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      /* Utils */
+      .hidden {
+        display: none !important;
+      }
+      .nav-top {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <button
+          id="mute-btn"
+          class="mute-btn"
+          onclick="SoundManager.toggleMute()"
+        >
+          🔊
+        </button>
+        <h1>🌟 أبطال التجويد 🌟</h1>
+        <p>رحلة ممتعة لتعلم أحكام المد الفرعي بسبب السكون</p>
+      </header>
+
+      <!-- Dashboard Info -->
+      <div class="dashboard-stats">
+        <div class="stat-box">⭐ النقاط: <span id="score">0</span></div>
+        <div class="stat-box">🏆 المستوى: <span id="level">مبتدئ</span></div>
+      </div>
+
+      <!-- Home Screen -->
+      <div id="home" class="section active">
+        <div class="nav-grid">
+          <button class="big-btn btn-learn" onclick="showSection('learn')">
+            📚 ابدأ التعلم
+            <span style="font-size: 1rem; font-weight: normal"
+              >شرح وخرائط ذهنية</span
+            >
+          </button>
+          <button class="big-btn btn-play" onclick="startQuiz()">
+            🎮 العب واختبر نفسك
+            <span style="font-size: 1rem; font-weight: normal"
+              >أسئلة وتحديات</span
+            >
+          </button>
+        </div>
+      </div>
+
+      <!-- Learn Screen -->
+      <div id="learn" class="section">
+        <div class="nav-top">
+          <h2>🧠 الخريطة الذهنية</h2>
+          <button class="home-btn" onclick="showSection('home')">
+            🏠 القائمة الرئيسية
+          </button>
+        </div>
+
+        <div class="mind-map">
+          <div class="mm-node mm-root">المد الفرعي بسبب السكون</div>
+          <div style="font-size: 2rem; color: #ccc">⬇</div>
+          <div class="mm-branches">
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <button class="mm-node mm-leaf" onclick="scrollToId('arid')">
+                المد العارض للسكون
+              </button>
+            </div>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <button class="mm-node mm-leaf" onclick="scrollToId('leen')">
+                مد اللين
+              </button>
+            </div>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <div class="mm-node mm-leaf" style="background: #fce4ec">
+                المد اللازم
+              </div>
+              <div class="mm-branches" style="margin-top: 5px">
+                <span class="mm-node mm-sub">كلمي</span>
+                <span class="mm-node mm-sub">حرفي</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr
+          style="margin: 20px 0; border: none; height: 2px; background: #eee"
+        />
+
+        <!-- Content Details -->
+        <div id="arid" class="lesson-card">
+          <h3>🔹 1. المد العارض للسكون</h3>
+          <p>
+            <strong>التعريف:</strong> هو أن يأتي بعد حرف المد حرف ساكن بسبب
+            الوقف عليه.
+          </p>
+          <br />
+          <div style="background: #e3f2fd; padding: 10px; border-radius: 8px">
+            <p>🛑 <strong>عند الوقف:</strong> يمد 2 أو 4 أو 6 حركات.</p>
+            <p>🟢 <strong>عند الوصل:</strong> يمد حركتين فقط (مد طبيعي).</p>
+          </div>
+          <br />
+          <h4>أمثلة وتطبيقات (سورة الفاتحة):</h4>
+          <div class="quran-example">
+            يَعْلَمُون<span class="highlight">َ</span> ⬅ يَعْلَمُون<span
+              class="highlight"
+              >ْ</span
+            >
+          </div>
+          <div class="quran-example">
+            الرَّحِي<span class="highlight">مِ</span> ⬅ الرَّحِي<span
+              class="highlight"
+              >مْ</span
+            >
+          </div>
+          <div class="quran-example">
+            نَسْتَعِي<span class="highlight">نُ</span> ⬅ نَسْتَعِي<span
+              class="highlight"
+              >نْ</span
+            >
+          </div>
+        </div>
+
+        <div id="leen" class="lesson-card">
+          <h3>🔹 2. مد اللين</h3>
+          <p>
+            <strong>التعريف:</strong> هو الواو أو الياء الساكنة المفتوح ما
+            قبلها، وبعدها سكون عارض للوقف.
+          </p>
+          <br />
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px">
+            <p>🛑 <strong>شرط التطبيق:</strong> الوقف فقط.</p>
+            <p>📏 <strong>المقدار:</strong> 2 أو 4 أو 6 حركات.</p>
+          </div>
+          <br />
+          <h4>أمثلة وتطبيقات (سورة قريش):</h4>
+          <div class="quran-example">
+            قُرَ<span class="highlight">يْ</span>شٍ ⬅ قُرَيْشْ
+          </div>
+          <div class="quran-example">
+            الصَّ<span class="highlight">يْ</span>فِ ⬅ الصَّيْفْ
+          </div>
+          <div class="quran-example">
+            خَ<span class="highlight">وْ</span>فٍ ⬅ خَوْفْ
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game" class="section">
+        <div class="nav-top">
+          <h2 id="phase-title">المرحلة الأولى: صح أم خطأ</h2>
+          <button class="home-btn" onclick="showSection('home')">خروج</button>
+        </div>
+
+        <div class="question-box">
+          <div id="question-text" class="question-text">السؤال يظهر هنا...</div>
+
+          <!-- TF Buttons -->
+          <div id="tf-buttons" class="answers-grid tf-grid hidden">
+            <button class="ans-btn btn-true" onclick="checkAnswer(true)">
+              ✔️ صح
+            </button>
+            <button class="ans-btn btn-false" onclick="checkAnswer(false)">
+              ❌ خطأ
+            </button>
+          </div>
+
+          <!-- MCQ Buttons -->
+          <div id="mcq-buttons" class="answers-grid hidden">
+            <!-- Will be populated by JS -->
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px; color: #7f8c8d">
+          السؤال <span id="q-num">1</span> من 10
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="feedback-modal" class="modal-overlay">
+      <div class="modal">
+        <span id="feedback-icon" class="feedback-icon">🎉</span>
+        <h2 id="feedback-title">إجابة صحيحة!</h2>
+        <p id="feedback-msg">أحسنت يا بطل!</p>
+        <button
+          class="home-btn"
+          style="background: var(--secondary)"
+          onclick="nextQuestion()"
+        >
+          التالي ➡
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // --- Data ---
+      const tfQuestions = [
+        {
+          q: "يُعرف المد العارض للسكون بأنه حرف مد يأتي بعده حرف سكن بسبب الوقف.",
+          a: true,
+        },
+        { q: "في حالة الوصل، يُمد المد العارض للسكون حركتين فقط.", a: true },
+        { q: "يُطبق مد اللين في الوصل والوقف.", a: false }, // False, only waqf
+        { q: "مقدار مد اللين عند الوقف (2 أو 4 أو 6).", a: true },
+        { q: "كلمة (قُرَيْشٍ) مثال على مد اللين عند الوقف.", a: true },
+      ];
+
+      const mcqQuestions = [
+        {
+          q: "مقدار المد العارض للسكون عند الوقف هو:",
+          options: ["حركة واحدة", "2 أو 4 أو 6 حركات", "5 حركات وجوباً"],
+          a: 1,
+        },
+        {
+          q: "شرط الواو والياء في مد اللين أن تكونا:",
+          options: ["متحركتين", "ساكنتين وقبلهما كسر", "ساكنتين وقبلهما فتح"],
+          a: 2,
+        },
+        {
+          q: "أي كلمة مما يلي تحتوي على مد لين؟",
+          options: ["الْبَيْتِ", "الرَّحِيمِ", "السَّمَاءِ"],
+          a: 0,
+        },
+        {
+          q: "ينقسم المد اللازم الكلمي إلى:",
+          options: ["مثقل ومخفف", "عارض ولين", "متصل ومنفصل"],
+          a: 0,
+        },
+        {
+          q: "أي مد يندرج تحت المد الفرعي بسبب السكون؟",
+          options: ["المد المتصل", "المد العارض للسكون", "مد البدل"],
+          a: 1,
+        },
+      ];
+
+      // --- State ---
+      let score = 0;
+      let currentQIndex = 0;
+      let isPhase2 = false;
+      let currentLevel = "مبتدئ";
+
+      // --- Logic ---
+
+      function showSection(id) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        window.scrollTo(0, 0);
+      }
+
+      function scrollToId(id) {
+        document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+      }
+
+      function updateStats() {
+        document.getElementById("score").innerText = score;
+        if (score >= 50) currentLevel = "متوسط";
+        if (score >= 80) currentLevel = "أستاذ التجويد";
+        document.getElementById("level").innerText = currentLevel;
+      }
+
+      function startQuiz() {
+        score = 0;
+        currentQIndex = 0;
+        isPhase2 = false;
+        updateStats();
+        showSection("game");
+        loadQuestion();
+        SoundManager.init(); // Ensure audio context starts
+      }
+
+      function loadQuestion() {
+        document.getElementById("feedback-modal").style.display = "none";
+
+        // Check phases
+        if (!isPhase2 && currentQIndex >= tfQuestions.length) {
+          isPhase2 = true;
+          currentQIndex = 0;
+          // Intro to Phase 2 alert or animation could go here
+        }
+
+        if (isPhase2 && currentQIndex >= mcqQuestions.length) {
+          finishGame();
+          return;
+        }
+
+        // Update UI Text
+        document.getElementById("q-num").innerText =
+          (isPhase2 ? 5 : 0) + currentQIndex + 1;
+        document.getElementById("phase-title").innerText = isPhase2
+          ? "المرحلة الثانية: اختر الإجابة الصحيحة"
+          : "المرحلة الأولى: صح أم خطأ";
+
+        const qBox = document.getElementById("question-text");
+        const tfBtns = document.getElementById("tf-buttons");
+        const mcqBtns = document.getElementById("mcq-buttons");
+
+        if (!isPhase2) {
+          // TF Mode
+          qBox.innerText = tfQuestions[currentQIndex].q;
+          tfBtns.classList.remove("hidden");
+          mcqBtns.classList.add("hidden");
+        } else {
+          // MCQ Mode
+          const qData = mcqQuestions[currentQIndex];
+          qBox.innerText = qData.q;
+          tfBtns.classList.add("hidden");
+          mcqBtns.classList.remove("hidden");
+
+          mcqBtns.innerHTML = "";
+          qData.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "ans-btn";
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            mcqBtns.appendChild(btn);
+          });
+        }
+      }
+
+      function checkAnswer(userAns) {
+        let isCorrect = false;
+        let correctAnsText = "";
+
+        if (!isPhase2) {
+          isCorrect = userAns === tfQuestions[currentQIndex].a;
+        } else {
+          isCorrect = userAns === mcqQuestions[currentQIndex].a;
+        }
+
+        if (isCorrect) {
+          score += 10;
+          showFeedback(true);
+          SoundManager.play("success");
+        } else {
+          showFeedback(false);
+          SoundManager.play("error");
+        }
+        updateStats();
+      }
+
+      function showFeedback(isCorrect) {
+        const modal = document.getElementById("feedback-modal");
+        const icon = document.getElementById("feedback-icon");
+        const title = document.getElementById("feedback-title");
+        const msg = document.getElementById("feedback-msg");
+
+        modal.style.display = "flex";
+
+        if (isCorrect) {
+          icon.innerText = "🌟";
+          title.innerText = "إجابة ممتازة!";
+          title.style.color = "var(--success)";
+          msg.innerText = "أحسنت، استمر يا بطل!";
+        } else {
+          icon.innerText = "🤔";
+          title.innerText = "حاول مرة أخرى";
+          title.style.color = "var(--error)";
+          msg.innerText = "لا بأس، تعلم من خطئك وتابع.";
+        }
+      }
+
+      function nextQuestion() {
+        currentQIndex++;
+        loadQuestion();
+      }
+
+      function finishGame() {
+        const modal = document.getElementById("feedback-modal");
+        modal.style.display = "flex";
+        document.getElementById("feedback-icon").innerText = "🏆";
+        document.getElementById("feedback-title").innerText = "انتهت اللعبة!";
+        SoundManager.play("win");
+        document.getElementById(
+          "feedback-msg"
+        ).innerHTML = `نقاطك النهائية: ${score} من 100<br>مستواك: ${currentLevel}`;
+
+        // Change button to go home
+        const btn = modal.querySelector("button");
+        btn.innerText = "العودة للرئيسية";
+        btn.onclick = () => {
+          modal.style.display = "none";
+          showSection("home");
+          // Reset button behavior for next game
+          btn.innerText = "التالي ➡";
+          btn.onclick = nextQuestion;
+        };
+      }
+
+      // --- Sound System ---
+      // --- Sound System (Web Audio API) ---
+      const SoundManager = {
+        ctx: null,
+        isMuted: false,
+
+        init: function () {
+          if (!this.ctx) {
+            const AudioContext =
+              window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContext();
+          }
+          if (this.ctx.state === "suspended") {
+            this.ctx.resume();
+          }
+        },
+
+        play: function (type) {
+          if (this.isMuted) return;
+          this.init(); // Ensure context is ready
+
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          switch (type) {
+            case "click":
+              // Short high-pitch "pop"
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(800, t);
+              osc.frequency.exponentialRampToValueAtTime(300, t + 0.1);
+              gain.gain.setValueAtTime(0.1, t);
+              gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+              osc.start(t);
+              osc.stop(t + 0.1);
+              break;
+
+            case "success":
+              // "Ding" - Major chime
+              this.playTone(600, "sine", 0.1, 0, 0.1); // C
+              this.playTone(800, "sine", 0.1, 0.1, 0.1); // E
+              setTimeout(() => this.playTone(1200, "sine", 0.3, 0, 0.4), 200); // High G
+              break;
+
+            case "error":
+              // "Buzz" - Sawtooth descending
+              osc.type = "sawtooth";
+              osc.frequency.setValueAtTime(150, t);
+              osc.frequency.linearRampToValueAtTime(50, t + 0.3);
+              gain.gain.setValueAtTime(0.1, t);
+              gain.gain.linearRampToValueAtTime(0.01, t + 0.3);
+              osc.start(t);
+              osc.stop(t + 0.3);
+              break;
+
+            case "win":
+              // Fanfare sequence
+              const notes = [523.25, 659.25, 783.99, 1046.5]; // C E G C
+              notes.forEach((freq, i) => {
+                this.playTone(freq, "square", 0.1, i * 0.1, 0.1, 0.05);
+              });
+              this.playTone(1046.5, "square", 0.4, 0.4, 0.1); // Hold last note
+              break;
+          }
+        },
+
+        playTone: function (freq, type, duration, delay = 0, vol = 0.1) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const t = this.ctx.currentTime + delay;
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.type = type;
+          osc.frequency.value = freq;
+
+          gain.gain.setValueAtTime(vol, t);
+          gain.gain.exponentialRampToValueAtTime(0.01, t + duration);
+
+          osc.start(t);
+          osc.stop(t + duration);
+        },
+
+        toggleMute: function () {
+          this.isMuted = !this.isMuted;
+          const btn = document.getElementById("mute-btn");
+          btn.innerText = this.isMuted ? "🔇" : "🔊";
+        },
+      };
+
+      // Add Global Click Sound for Buttons
+      document.addEventListener("click", (e) => {
+        if (e.target.tagName === "BUTTON" || e.target.closest("button")) {
+          // Avoid playing click sound twice if the button has its own handler that plays a specific sound (like answer buttons playing success/fail instantly?
+          // Actually, answer buttons play sound inside checkAnswer logic.
+          // Let's play 'click' for nav buttons mainly.
+          if (!e.target.classList.contains("ans-btn")) {
+            // Don't play generic click for game answers to avoid overlap with success/fail
+            SoundManager.play("click");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
