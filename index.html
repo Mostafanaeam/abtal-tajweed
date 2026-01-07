@@ -56,10 +56,10 @@
         position: relative;
       }
 
-      .mute-btn {
+      .mute-btn,
+      .lang-btn {
         position: absolute;
         top: 20px;
-        left: 20px;
         background: rgba(255, 255, 255, 0.2);
         border: 2px solid white;
         color: white;
@@ -72,8 +72,33 @@
         justify-content: center;
         align-items: center;
         transition: all 0.2s;
+        z-index: 10;
       }
-      .mute-btn:hover {
+      .mute-btn {
+        left: 20px;
+      }
+      .lang-btn {
+        left: unset;
+        right: 20px;
+        width: auto;
+        padding: 0 15px;
+        border-radius: 20px;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      /* RTL/LTR Adjustments */
+      html[dir="ltr"] .mute-btn {
+        left: unset;
+        right: 20px;
+      }
+      html[dir="ltr"] .lang-btn {
+        right: unset;
+        left: 20px;
+      }
+
+      .mute-btn:hover,
+      .lang-btn:hover {
         background: white;
         color: var(--secondary);
       }
@@ -141,6 +166,29 @@
       .btn-learn {
         background: var(--primary);
       }
+      /* Hero Section */
+      .hero-section {
+        background: linear-gradient(135deg, var(--secondary), #2980b9);
+        color: white;
+        padding: 60px 20px;
+        text-align: center;
+        border-radius: 0 0 50% 50% / 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 30px;
+      }
+
       .btn-play {
         background: #9b59b6;
       }
@@ -361,28 +409,49 @@
         >
           🔊
         </button>
-        <h1>🌟 أبطال التجويد 🌟</h1>
-        <p>رحلة ممتعة لتعلم أحكام المد الفرعي بسبب السكون</p>
+        <button id="lang-btn" class="lang-btn" onclick="toggleLanguage()">
+          �🇸 English
+        </button>
+        <!-- Header content moved to Hero for better design in Home, 
+             but we keep a minimal header or just branding if needed. 
+             For this design, let's keep the header simple or merge. -->
       </header>
 
       <!-- Dashboard Info -->
       <div class="dashboard-stats">
-        <div class="stat-box">⭐ النقاط: <span id="score">0</span></div>
-        <div class="stat-box">🏆 المستوى: <span id="level">مبتدئ</span></div>
+        <div class="stat-box">
+          <span data-i18n="score_label">⭐ النقاط:</span>
+          <span id="score">0</span>
+        </div>
+        <div class="stat-box">
+          <span data-i18n="level_label">🏆 المستوى:</span>
+          <span id="level" data-i18n="level_beginner">مبتدئ</span>
+        </div>
       </div>
 
-      <!-- Home Screen -->
-      <div id="home" class="section active">
+      <!-- Home Screen (Hero) -->
+      <div id="home" class="section active" style="padding: 0">
+        <div class="hero-section">
+          <h1 class="hero-title" data-i18n="hero_title">🌟 أبطال التجويد 🌟</h1>
+          <p class="hero-subtitle" data-i18n="hero_subtitle">
+            رحلة ممتعة لتعلم أحكام المد الفرعي بسبب السكون
+          </p>
+        </div>
+
         <div class="nav-grid">
           <button class="big-btn btn-learn" onclick="showSection('learn')">
-            📚 ابدأ التعلم
-            <span style="font-size: 1rem; font-weight: normal"
+            <span data-i18n="btn_learn">📚 ابدأ التعلم</span>
+            <span
+              style="font-size: 1rem; font-weight: normal"
+              data-i18n="btn_learn_desc"
               >شرح وخرائط ذهنية</span
             >
           </button>
           <button class="big-btn btn-play" onclick="startQuiz()">
-            🎮 العب واختبر نفسك
-            <span style="font-size: 1rem; font-weight: normal"
+            <span data-i18n="btn_play">🎮 العب واختبر نفسك</span>
+            <span
+              style="font-size: 1rem; font-weight: normal"
+              data-i18n="btn_play_desc"
               >أسئلة وتحديات</span
             >
           </button>
@@ -392,39 +461,61 @@
       <!-- Learn Screen -->
       <div id="learn" class="section">
         <div class="nav-top">
-          <h2>🧠 الخريطة الذهنية</h2>
-          <button class="home-btn" onclick="showSection('home')">
+          <h2 data-i18n="mindmap_title">🧠 الخريطة الذهنية</h2>
+          <button
+            class="home-btn"
+            onclick="showSection('home')"
+            data-i18n="btn_home"
+          >
             🏠 القائمة الرئيسية
           </button>
         </div>
 
         <div class="mind-map">
-          <div class="mm-node mm-root">المد الفرعي بسبب السكون</div>
+          <div class="mm-node mm-root" data-i18n="mm_root">
+            المد الفرعي بسبب السكون
+          </div>
           <div style="font-size: 2rem; color: #ccc">⬇</div>
           <div class="mm-branches">
             <div
               style="display: flex; flex-direction: column; align-items: center"
             >
-              <button class="mm-node mm-leaf" onclick="scrollToId('arid')">
+              <button
+                class="mm-node mm-leaf"
+                onclick="scrollToId('arid')"
+                data-i18n="mm_arid"
+              >
                 المد العارض للسكون
               </button>
             </div>
             <div
               style="display: flex; flex-direction: column; align-items: center"
             >
-              <button class="mm-node mm-leaf" onclick="scrollToId('leen')">
+              <button
+                class="mm-node mm-leaf"
+                onclick="scrollToId('leen')"
+                data-i18n="mm_leen"
+              >
                 مد اللين
               </button>
             </div>
             <div
               style="display: flex; flex-direction: column; align-items: center"
             >
-              <div class="mm-node mm-leaf" style="background: #fce4ec">
+              <div
+                class="mm-node mm-leaf"
+                style="background: #fce4ec"
+                data-i18n="mm_lazim"
+              >
                 المد اللازم
               </div>
               <div class="mm-branches" style="margin-top: 5px">
-                <span class="mm-node mm-sub">كلمي</span>
-                <span class="mm-node mm-sub">حرفي</span>
+                <span class="mm-node mm-sub" data-i18n="mm_lazim_kalimi"
+                  >كلمي</span
+                >
+                <span class="mm-node mm-sub" data-i18n="mm_lazim_harfi"
+                  >حرفي</span
+                >
               </div>
             </div>
           </div>
@@ -436,18 +527,30 @@
 
         <!-- Content Details -->
         <div id="arid" class="lesson-card">
-          <h3>🔹 1. المد العارض للسكون</h3>
+          <h3>
+            <span data-i18n="lesson1_title">🔹 1. المد العارض للسكون</span>
+          </h3>
           <p>
-            <strong>التعريف:</strong> هو أن يأتي بعد حرف المد حرف ساكن بسبب
-            الوقف عليه.
+            <strong data-i18n="def_label">التعريف:</strong>
+            <span data-i18n="lesson1_def"
+              >هو أن يأتي بعد حرف المد حرف ساكن بسبب الوقف عليه.</span
+            >
           </p>
           <br />
           <div style="background: #e3f2fd; padding: 10px; border-radius: 8px">
-            <p>🛑 <strong>عند الوقف:</strong> يمد 2 أو 4 أو 6 حركات.</p>
-            <p>🟢 <strong>عند الوصل:</strong> يمد حركتين فقط (مد طبيعي).</p>
+            <p>
+              🛑 <strong data-i18n="stop_rule_label">عند الوقف:</strong>
+              <span data-i18n="lesson1_rule_stop">يمد 2 أو 4 أو 6 حركات.</span>
+            </p>
+            <p>
+              🟢 <strong data-i18n="connect_rule_label">عند الوصل:</strong>
+              <span data-i18n="lesson1_rule_connect"
+                >يمد حركتين فقط (مد طبيعي).</span
+              >
+            </p>
           </div>
           <br />
-          <h4>أمثلة وتطبيقات (سورة الفاتحة):</h4>
+          <h4 data-i18n="examples_label">أمثلة وتطبيقات (سورة الفاتحة):</h4>
           <div class="quran-example">
             يَعْلَمُون<span class="highlight">َ</span> ⬅ يَعْلَمُون<span
               class="highlight"
@@ -469,18 +572,27 @@
         </div>
 
         <div id="leen" class="lesson-card">
-          <h3>🔹 2. مد اللين</h3>
+          <h3><span data-i18n="lesson2_title">🔹 2. مد اللين</span></h3>
           <p>
-            <strong>التعريف:</strong> هو الواو أو الياء الساكنة المفتوح ما
-            قبلها، وبعدها سكون عارض للوقف.
+            <strong data-i18n="def_label">التعريف:</strong>
+            <span data-i18n="lesson2_def"
+              >هو الواو أو الياء الساكنة المفتوح ما قبلها، وبعدها سكون عارض
+              للوقف.</span
+            >
           </p>
           <br />
           <div style="background: #e8f5e9; padding: 10px; border-radius: 8px">
-            <p>🛑 <strong>شرط التطبيق:</strong> الوقف فقط.</p>
-            <p>📏 <strong>المقدار:</strong> 2 أو 4 أو 6 حركات.</p>
+            <p>
+              🛑 <strong data-i18n="condition_label">شرط التطبيق:</strong>
+              <span data-i18n="lesson2_condition">الوقف فقط.</span>
+            </p>
+            <p>
+              📏 <strong data-i18n="amount_label">المقدار:</strong>
+              <span data-i18n="lesson2_amount">2 أو 4 أو 6 حركات.</span>
+            </p>
           </div>
           <br />
-          <h4>أمثلة وتطبيقات (سورة قريش):</h4>
+          <h4 data-i18n="examples_label">أمثلة وتطبيقات (سورة قريش):</h4>
           <div class="quran-example">
             قُرَ<span class="highlight">يْ</span>شٍ ⬅ قُرَيْشْ
           </div>
@@ -496,8 +608,16 @@
       <!-- Game Screen -->
       <div id="game" class="section">
         <div class="nav-top">
-          <h2 id="phase-title">المرحلة الأولى: صح أم خطأ</h2>
-          <button class="home-btn" onclick="showSection('home')">خروج</button>
+          <h2 id="phase-title" data-i18n="phase1_title">
+            المرحلة الأولى: صح أم خطأ
+          </h2>
+          <button
+            class="home-btn"
+            onclick="showSection('home')"
+            data-i18n="btn_exit"
+          >
+            خروج
+          </button>
         </div>
 
         <div class="question-box">
@@ -505,10 +625,18 @@
 
           <!-- TF Buttons -->
           <div id="tf-buttons" class="answers-grid tf-grid hidden">
-            <button class="ans-btn btn-true" onclick="checkAnswer(true)">
+            <button
+              class="ans-btn btn-true"
+              onclick="checkAnswer(true)"
+              data-i18n="btn_true"
+            >
               ✔️ صح
             </button>
-            <button class="ans-btn btn-false" onclick="checkAnswer(false)">
+            <button
+              class="ans-btn btn-false"
+              onclick="checkAnswer(false)"
+              data-i18n="btn_false"
+            >
               ❌ خطأ
             </button>
           </div>
@@ -519,7 +647,8 @@
           </div>
         </div>
         <div style="text-align: center; margin-top: 20px; color: #7f8c8d">
-          السؤال <span id="q-num">1</span> من 10
+          <span data-i18n="q_label">السؤال</span> <span id="q-num">1</span>
+          <span data-i18n="of_label">من</span> 10
         </div>
       </div>
     </div>
@@ -541,42 +670,210 @@
     </div>
 
     <script>
+      // --- I18n Data ---
+      const translations = {
+        title: {
+          ar: "أبطال التجويد - المد الفرعي",
+          en: "Tajweed Heroes - Secondary Madd",
+        },
+        hero_title: { ar: "🌟 أبطال التجويد 🌟", en: "🌟 Tajweed Heroes 🌟" },
+        hero_subtitle: {
+          ar: "رحلة ممتعة لتعلم أحكام المد الفرعي بسبب السكون",
+          en: "A fun journey to learn Secondary Madd due to Sukoon",
+        },
+        score_label: { ar: "⭐ النقاط:", en: "⭐ Score:" },
+        level_label: { ar: "🏆 المستوى:", en: "🏆 Level:" },
+
+        btn_learn: { ar: "📚 ابدأ التعلم", en: "📚 Start Learning" },
+        btn_learn_desc: {
+          ar: "شرح وخرائط ذهنية",
+          en: "Explanations & Mind Maps",
+        },
+        btn_play: { ar: "🎮 العب واختبر نفسك", en: "🎮 Play & Quiz" },
+        btn_play_desc: { ar: "أسئلة وتحديات", en: "Questions & Challenges" },
+
+        mindmap_title: { ar: "🧠 الخريطة الذهنية", en: "🧠 Mind Map" },
+        btn_home: { ar: "🏠 القائمة الرئيسية", en: "🏠 Home" },
+
+        mm_root: {
+          ar: "المد الفرعي بسبب السكون",
+          en: "Secondary Madd (Sukoon)",
+        },
+        mm_arid: { ar: "المد العارض للسكون", en: "Madd Arid li-Sukoon" },
+        mm_leen: { ar: "مد اللين", en: "Madd Leen" },
+        mm_lazim: { ar: "المد اللازم", en: "Madd Lazim" },
+        mm_lazim_kalimi: { ar: "كلمي", en: "Kalimi (Word)" },
+        mm_lazim_harfi: { ar: "حرفي", en: "Harfi (Letter)" },
+
+        lesson1_title: {
+          ar: "🔹 1. المد العارض للسكون",
+          en: "🔹 1. Madd Arid li-Sukoon",
+        },
+        def_label: { ar: "التعريف:", en: "Definition:" },
+        lesson1_def: {
+          ar: "هو أن يأتي بعد حرف المد حرف ساكن بسبب الوقف عليه.",
+          en: "When a Madd letter is followed by a sukoon caused by stopping.",
+        },
+        stop_rule_label: { ar: "عند الوقف:", en: "When Stopping:" },
+        connect_rule_label: { ar: "عند الوصل:", en: "When Connecting:" },
+        lesson1_rule_stop: {
+          ar: "يمد 2 أو 4 أو 6 حركات.",
+          en: "Prolong for 2, 4, or 6 counts.",
+        },
+        lesson1_rule_connect: {
+          ar: "يمد حركتين فقط (مد طبيعي).",
+          en: "Prolong for 2 counts (Natural Madd).",
+        },
+        examples_label: { ar: "أمثلة وتطبيقات:", en: "Examples:" },
+
+        lesson2_title: { ar: "🔹 2. مد اللين", en: "🔹 2. Madd Leen" },
+        lesson2_def: {
+          ar: "هو الواو أو الياء الساكنة المفتوح ما قبلها، وبعدها سكون عارض للوقف.",
+          en: "Static Waw or Ya preceded by Fatha, followed by sukoon due to stopping.",
+        },
+        condition_label: { ar: "شرط التطبيق:", en: "Condition:" },
+        lesson2_condition: { ar: "الوقف فقط.", en: "Stopping only." },
+        amount_label: { ar: "المقدار:", en: "Duration:" },
+        lesson2_amount: { ar: "2 أو 4 أو 6 حركات.", en: "2, 4, or 6 counts." },
+
+        phase1_title: {
+          ar: "المرحلة الأولى: صح أم خطأ",
+          en: "Phase 1: True or False",
+        },
+        phase2_title: {
+          ar: "المرحلة الثانية: اختر الإجابة الصحيحة",
+          en: "Phase 2: Multiple Choice",
+        },
+        btn_exit: { ar: "خروج", en: "Exit" },
+        btn_true: { ar: "✔️ صح", en: "✔️ True" },
+        btn_false: { ar: "❌ خطأ", en: "❌ False" },
+
+        q_label: { ar: "السؤال", en: "Question" },
+        of_label: { ar: "من", en: "of" },
+
+        level_beginner: { ar: "مبتدئ", en: "Beginner" },
+        level_intermediate: { ar: "متوسط", en: "Intermediate" },
+        level_master: { ar: "أستاذ التجويد", en: "Tajweed Master" },
+
+        feedback_correct: { ar: "إجابة ممتازة!", en: "Excellent!" },
+        feedback_correct_msg: {
+          ar: "أحسنت، استمر يا بطل!",
+          en: "Great job, keep going!",
+        },
+        feedback_wrong: { ar: "حاول مرة أخرى", en: "Try Again" },
+        feedback_wrong_msg: {
+          ar: "لا بأس، تعلم من خطئك وتابع.",
+          en: "It's okay, learn and continue.",
+        },
+
+        game_over: { ar: "انتهت اللعبة!", en: "Game Over!" },
+        final_score: { ar: "نقاطك النهائية: ", en: "Final Score: " },
+        your_level: { ar: "مستواك: ", en: "Your Level: " },
+        btn_next: { ar: "التالي ➡", en: "Next ➡" },
+        btn_home_back: { ar: "العودة للرئيسية", en: "Back to Home" },
+      };
+
       // --- Data ---
       const tfQuestions = [
         {
-          q: "يُعرف المد العارض للسكون بأنه حرف مد يأتي بعده حرف سكن بسبب الوقف.",
+          q: {
+            ar: "يُعرف المد العارض للسكون بأنه حرف مد يأتي بعده حرف ساكن بسبب الوقف.",
+            en: "Madd Arid is defined as a Madd letter followed by a sukoon due to stopping.",
+          },
           a: true,
         },
-        { q: "في حالة الوصل، يُمد المد العارض للسكون حركتين فقط.", a: true },
-        { q: "يُطبق مد اللين في الوصل والوقف.", a: false }, // False, only waqf
-        { q: "مقدار مد اللين عند الوقف (2 أو 4 أو 6).", a: true },
-        { q: "كلمة (قُرَيْشٍ) مثال على مد اللين عند الوقف.", a: true },
+        {
+          q: {
+            ar: "في حالة الوصل، يُمد المد العارض للسكون حركتين فقط.",
+            en: "In 'Wisl' (connecting), Madd Arid is prolonged for only 2 counts.",
+          },
+          a: true,
+        },
+        {
+          q: {
+            ar: "يُطبق مد اللين في الوصل والوقف.",
+            en: "Madd Leen applies in both connecting and stopping.",
+          },
+          a: false,
+        },
+        {
+          q: {
+            ar: "مقدار مد اللين عند الوقف (2 أو 4 أو 6).",
+            en: "Madd Leen duration when stopping is 2, 4, or 6.",
+          },
+          a: true,
+        },
+        {
+          q: {
+            ar: "كلمة (قُرَيْشٍ) مثال على مد اللين عند الوقف.",
+            en: "The word (Quraish) is an example of Madd Leen when stopping.",
+          },
+          a: true,
+        },
       ];
 
       const mcqQuestions = [
         {
-          q: "مقدار المد العارض للسكون عند الوقف هو:",
-          options: ["حركة واحدة", "2 أو 4 أو 6 حركات", "5 حركات وجوباً"],
+          q: {
+            ar: "مقدار المد العارض للسكون عند الوقف هو:",
+            en: "The duration of Madd Arid when stopping is:",
+          },
+          options: {
+            ar: ["حركة واحدة", "2 أو 4 أو 6 حركات", "5 حركات وجوباً"],
+            en: ["1 count", "2, 4, or 6 counts", "5 counts widely"],
+          },
           a: 1,
         },
         {
-          q: "شرط الواو والياء في مد اللين أن تكونا:",
-          options: ["متحركتين", "ساكنتين وقبلهما كسر", "ساكنتين وقبلهما فتح"],
+          q: {
+            ar: "شرط الواو والياء في مد اللين أن تكونا:",
+            en: "The condition for Waw/Ya in Madd Leen is to be:",
+          },
+          options: {
+            ar: ["متحركتين", "ساكنتين وقبلهما كسر", "ساكنتين وقبلهما فتح"],
+            en: [
+              "Voweled",
+              "Static preceded by Kasra",
+              "Static preceded by Fatha",
+            ],
+          },
           a: 2,
         },
         {
-          q: "أي كلمة مما يلي تحتوي على مد لين؟",
-          options: ["الْبَيْتِ", "الرَّحِيمِ", "السَّمَاءِ"],
+          q: {
+            ar: "أي كلمة مما يلي تحتوي على مد لين؟",
+            en: "Which word contains Madd Leen?",
+          },
+          options: {
+            ar: ["الْبَيْتِ", "الرَّحِيمِ", "السَّمَاءِ"],
+            en: ["Al-Bayt", "Ar-Raheem", "As-Samaa"],
+          },
           a: 0,
         },
         {
-          q: "ينقسم المد اللازم الكلمي إلى:",
-          options: ["مثقل ومخفف", "عارض ولين", "متصل ومنفصل"],
+          q: {
+            ar: "ينقسم المد اللازم الكلمي إلى:",
+            en: "Madd Lazim Kalimi is divided into:",
+          },
+          options: {
+            ar: ["مثقل ومخفف", "عارض ولين", "متصل ومنفصل"],
+            en: [
+              "Heavy (Muthaqal) and Light (Mukhaffaf)",
+              "Arid and Leen",
+              "Connected and Disconnected",
+            ],
+          },
           a: 0,
         },
         {
-          q: "أي مد يندرج تحت المد الفرعي بسبب السكون؟",
-          options: ["المد المتصل", "المد العارض للسكون", "مد البدل"],
+          q: {
+            ar: "أي مد يندرج تحت المد الفرعي بسبب السكون؟",
+            en: "Which Madd is Secondary due to Sukoon?",
+          },
+          options: {
+            ar: ["المد المتصل", "المد العارض للسكون", "مد البدل"],
+            en: ["Madd Muttasil", "Madd Arid li-Sukoon", "Madd Badal"],
+          },
           a: 1,
         },
       ];
@@ -586,8 +883,39 @@
       let currentQIndex = 0;
       let isPhase2 = false;
       let currentLevel = "مبتدئ";
+      let currentLang = "ar";
 
       // --- Logic ---
+
+      function toggleLanguage() {
+        currentLang = currentLang === "ar" ? "en" : "ar";
+        updateLanguage();
+      }
+
+      function updateLanguage() {
+        // Update DOM Elements
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+
+        // Update Button Text
+        document.getElementById("lang-btn").innerText =
+          currentLang === "ar" ? "🇺🇸 English" : "🇸🇦 العربية";
+
+        // Update Text Content
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (translations[key] && translations[key][currentLang]) {
+            el.innerText = translations[key][currentLang];
+          }
+        });
+
+        // Refresh specific dynamic areas if needed
+        updateStats();
+        // If in game, reload question text
+        if (document.getElementById("game").classList.contains("active")) {
+          loadQuestion(); // Reload to update question text
+        }
+      }
 
       function showSection(id) {
         document
@@ -603,8 +931,14 @@
 
       function updateStats() {
         document.getElementById("score").innerText = score;
-        if (score >= 50) currentLevel = "متوسط";
-        if (score >= 80) currentLevel = "أستاذ التجويد";
+        if (score >= 50)
+          currentLevel =
+            translations.level_intermediate[currentLang]; // "متوسط";
+        else if (score >= 80)
+          currentLevel =
+            translations.level_master[currentLang]; // "أستاذ التجويد";
+        else currentLevel = translations.level_beginner[currentLang]; // "مبتدئ";
+
         document.getElementById("level").innerText = currentLevel;
       }
 
@@ -637,8 +971,8 @@
         document.getElementById("q-num").innerText =
           (isPhase2 ? 5 : 0) + currentQIndex + 1;
         document.getElementById("phase-title").innerText = isPhase2
-          ? "المرحلة الثانية: اختر الإجابة الصحيحة"
-          : "المرحلة الأولى: صح أم خطأ";
+          ? translations.phase2_title[currentLang]
+          : translations.phase1_title[currentLang];
 
         const qBox = document.getElementById("question-text");
         const tfBtns = document.getElementById("tf-buttons");
@@ -646,18 +980,18 @@
 
         if (!isPhase2) {
           // TF Mode
-          qBox.innerText = tfQuestions[currentQIndex].q;
+          qBox.innerText = tfQuestions[currentQIndex].q[currentLang];
           tfBtns.classList.remove("hidden");
           mcqBtns.classList.add("hidden");
         } else {
           // MCQ Mode
           const qData = mcqQuestions[currentQIndex];
-          qBox.innerText = qData.q;
+          qBox.innerText = qData.q[currentLang];
           tfBtns.classList.add("hidden");
           mcqBtns.classList.remove("hidden");
 
           mcqBtns.innerHTML = "";
-          qData.options.forEach((opt, index) => {
+          qData.options[currentLang].forEach((opt, index) => {
             const btn = document.createElement("button");
             btn.className = "ans-btn";
             btn.innerText = opt;
@@ -669,7 +1003,6 @@
 
       function checkAnswer(userAns) {
         let isCorrect = false;
-        let correctAnsText = "";
 
         if (!isPhase2) {
           isCorrect = userAns === tfQuestions[currentQIndex].a;
@@ -693,19 +1026,24 @@
         const icon = document.getElementById("feedback-icon");
         const title = document.getElementById("feedback-title");
         const msg = document.getElementById("feedback-msg");
+        const btn = modal.querySelector("button");
 
         modal.style.display = "flex";
 
+        // Reset button in case coming from finishGame
+        btn.onclick = nextQuestion;
+        btn.innerText = translations.btn_next[currentLang];
+
         if (isCorrect) {
           icon.innerText = "🌟";
-          title.innerText = "إجابة ممتازة!";
+          title.innerText = translations.feedback_correct[currentLang];
           title.style.color = "var(--success)";
-          msg.innerText = "أحسنت، استمر يا بطل!";
+          msg.innerText = translations.feedback_correct_msg[currentLang];
         } else {
           icon.innerText = "🤔";
-          title.innerText = "حاول مرة أخرى";
+          title.innerText = translations.feedback_wrong[currentLang];
           title.style.color = "var(--error)";
-          msg.innerText = "لا بأس، تعلم من خطئك وتابع.";
+          msg.innerText = translations.feedback_wrong_msg[currentLang];
         }
       }
 
@@ -718,20 +1056,21 @@
         const modal = document.getElementById("feedback-modal");
         modal.style.display = "flex";
         document.getElementById("feedback-icon").innerText = "🏆";
-        document.getElementById("feedback-title").innerText = "انتهت اللعبة!";
+        document.getElementById("feedback-title").innerText =
+          translations.game_over[currentLang];
         SoundManager.play("win");
         document.getElementById(
           "feedback-msg"
-        ).innerHTML = `نقاطك النهائية: ${score} من 100<br>مستواك: ${currentLevel}`;
+        ).innerHTML = `${translations.final_score[currentLang]} ${score} / 100<br>${translations.your_level[currentLang]} ${currentLevel}`;
 
         // Change button to go home
         const btn = modal.querySelector("button");
-        btn.innerText = "العودة للرئيسية";
+        btn.innerText = translations.btn_home_back[currentLang];
         btn.onclick = () => {
           modal.style.display = "none";
           showSection("home");
           // Reset button behavior for next game
-          btn.innerText = "التالي ➡";
+          btn.innerText = translations.btn_next[currentLang];
           btn.onclick = nextQuestion;
         };
       }
